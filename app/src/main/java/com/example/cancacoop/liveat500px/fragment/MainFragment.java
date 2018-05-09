@@ -5,13 +5,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.example.cancacoop.liveat500px.R;
+import com.example.cancacoop.liveat500px.adapter.PhotoListAdapter;
+import com.example.cancacoop.liveat500px.view.PhotoListItem;
 
 /**
  * Created by nuuneoi on 11/16/2014.
  */
 public class MainFragment extends Fragment {
+
+    ListView listView;
+    PhotoListAdapter listAdapter;
 
     public MainFragment() {
         super();
@@ -34,6 +40,9 @@ public class MainFragment extends Fragment {
 
     private void initInstances(View rootView) {
         // Init 'View' instance(s) with rootView.findViewById here
+        listView = rootView.findViewById(R.id.listView);
+        listAdapter = new PhotoListAdapter();
+        listView.setAdapter(listAdapter);
     }
 
     @Override
