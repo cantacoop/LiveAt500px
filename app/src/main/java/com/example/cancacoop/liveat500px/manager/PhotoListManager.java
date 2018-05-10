@@ -1,6 +1,7 @@
 package com.example.cancacoop.liveat500px.manager;
 
 import android.content.Context;
+import android.os.Bundle;
 
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
@@ -95,5 +96,15 @@ public class PhotoListManager {
             return 0;
 
         return dao.getData().size();
+    }
+
+    public Bundle onSaveInstanceState() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("dao", dao);
+        return bundle;
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        dao = savedInstanceState.getParcelable("dao");
     }
 }

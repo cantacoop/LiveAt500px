@@ -1,6 +1,7 @@
 package com.example.cancacoop.liveat500px.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -61,15 +62,29 @@ public class MainFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        init(savedInstanceState);
+
+
+        if (savedInstanceState != null)
+            onRestoreInstanceState(savedInstanceState); // Restore Instance state
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        initInstances(rootView);
+        initInstances(rootView, savedInstanceState);
         return rootView;
     }
 
-    private void initInstances(View rootView) {
+    private void init(Bundle savedInstanceState) {
         photoListManager = new PhotoListManager();
+    }
+
+    private void initInstances(View rootView, Bundle savedInstanceState) {
 
         btnNewPhotos = rootView.findViewById(R.id.btnNewPhotos);
         btnNewPhotos.setOnClickListener(buttonClickListener);
@@ -77,13 +92,15 @@ public class MainFragment extends Fragment {
         // Init 'View' instance(s) with rootView.findViewById here
         listView = rootView.findViewById(R.id.listView);
         listAdapter = new PhotoListAdapter();
+        listAdapter.setDao(photoListManager.getDao());
         listView.setAdapter(listAdapter);
 
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(pullToRefreshListener);
         listView.setOnScrollListener(listViewScrollListener);
 
-        refreshData();
+        if (savedInstanceState == null)
+            refreshData();
     }
 
     private void refreshData() {
@@ -138,6 +155,13 @@ public class MainFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         // Save Instance State here
+        outState.putBundle("photoListManager",
+                photoListManager.onSaveInstanceState());
+    }
+
+    private void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Restore instance state here
+        photoListManager.onRestoreInstanceState(savedInstanceState.getBundle("photoListManager"));
     }
 
     /*
@@ -146,9 +170,6 @@ public class MainFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            // Restore Instance State here
-        }
     }
 
     private void showButtonNewPhotos() {
