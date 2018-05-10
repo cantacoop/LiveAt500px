@@ -126,7 +126,8 @@ public class PhotoListItem extends BaseCustomViewGroup {
     public void setImageUrl(String url) {
 
         RequestOptions options = new RequestOptions()
-                .diskCacheStrategy(DiskCacheStrategy.ALL);
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.loading);
 
         Glide.with(getContext())
                 .load(url)

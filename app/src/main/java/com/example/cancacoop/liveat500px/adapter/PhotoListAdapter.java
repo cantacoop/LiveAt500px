@@ -3,8 +3,11 @@ package com.example.cancacoop.liveat500px.adapter;
 import android.provider.ContactsContract;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 
+import com.example.cancacoop.liveat500px.R;
 import com.example.cancacoop.liveat500px.manager.PhotoListManager;
 import com.example.cancacoop.liveat500px.view.PhotoListItem;
 
@@ -14,6 +17,8 @@ import dao.PhotoItemDao;
 public class PhotoListAdapter extends BaseAdapter {
 
     PhotoItemCollectionDao dao;
+
+    int lastPosition = -1;
 
     public void setDao(PhotoItemCollectionDao dao) {
         this.dao = dao;
@@ -52,6 +57,12 @@ public class PhotoListAdapter extends BaseAdapter {
         item.setNameText(dao.getCaption());
         item.setDescriptionText(dao.getUsername() + "\n" + dao.getCamera());
         item.setImageUrl(dao.getImageUrl() );
+
+        if (position > lastPosition) {
+            Animation anim = AnimationUtils.loadAnimation(parent.getContext(), R.anim.up_from_bottom);
+            item.startAnimation(anim);
+            lastPosition = position;
+        }
 
         return item;
     }
