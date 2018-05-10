@@ -6,10 +6,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.cancacoop.liveat500px.R;
 import com.example.cancacoop.liveat500px.adapter.PhotoListAdapter;
+import com.example.cancacoop.liveat500px.manager.HttpManager;
 import com.example.cancacoop.liveat500px.view.PhotoListItem;
+
+import java.io.IOException;
+
+import dao.PhotoItemCollectionDao;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by nuuneoi on 11/16/2014.
@@ -43,6 +52,40 @@ public class MainFragment extends Fragment {
         listView = rootView.findViewById(R.id.listView);
         listAdapter = new PhotoListAdapter();
         listView.setAdapter(listAdapter);
+
+        Call<PhotoItemCollectionDao> call = HttpManager.getInstance().getService().loadPhotoList();
+        call.enqueue(new Callback<PhotoItemCollectionDao>() {
+            @Override
+            public void onResponse(Call<PhotoItemCollectionDao> call,
+                                   Response<PhotoItemCollectionDao> response) {
+                if (response.isSuccessful()) {
+                    PhotoItemCollectionDao dao = response.body();
+                    Toast.makeText(getActivity(),
+                            dao.getData().get(0).getCaption(),
+                            Toast.LENGTH_SHORT
+                    ).show();
+                } else {
+                    // Handle
+                    try {
+                        Toast.makeText(getActivity(),
+                                response.errorBody().string(),
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PhotoItemCollectionDao> call,
+                                  Throwable t) {
+                Toast.makeText(getActivity(),
+                        t.toString(),
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
+        });
     }
 
     @Override
