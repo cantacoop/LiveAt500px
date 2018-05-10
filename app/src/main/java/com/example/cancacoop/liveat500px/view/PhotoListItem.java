@@ -134,4 +134,6 @@ public class PhotoListItem extends BaseCustomViewGroup {
                 .apply(options)
                 .into(ivImage);
     }
+
+
 }
