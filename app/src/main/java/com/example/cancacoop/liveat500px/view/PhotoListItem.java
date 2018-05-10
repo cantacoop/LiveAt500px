@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.cancacoop.liveat500px.R;
 import com.inthecheesefactory.thecheeselibrary.view.BaseCustomViewGroup;
 import com.inthecheesefactory.thecheeselibrary.view.state.BundleSavedState;
@@ -122,8 +124,13 @@ public class PhotoListItem extends BaseCustomViewGroup {
     }
 
     public void setImageUrl(String url) {
+
+        RequestOptions options = new RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.ALL);
+
         Glide.with(getContext())
                 .load(url)
+                .apply(options)
                 .into(ivImage);
     }
 }
