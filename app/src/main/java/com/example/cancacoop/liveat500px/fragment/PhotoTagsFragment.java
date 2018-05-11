@@ -71,7 +71,7 @@ public class PhotoTagsFragment extends Fragment {
 
             if (i != 0)
                 msgTags += ", ";
-            
+
             msgTags += dao.getTags().get(i);
         }
         tvTags.setText(msgTags);
