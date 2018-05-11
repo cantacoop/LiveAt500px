@@ -1,5 +1,6 @@
 package com.example.cancacoop.liveat500px.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,11 +12,13 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.cancacoop.liveat500px.R;
+import com.example.cancacoop.liveat500px.activity.MoreInfoActivity;
 import com.example.cancacoop.liveat500px.adapter.PhotoListAdapter;
 import com.example.cancacoop.liveat500px.datatype.MutableInteger;
 import com.example.cancacoop.liveat500px.manager.HttpManager;
@@ -29,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import dao.PhotoItemCollectionDao;
+import dao.PhotoItemDao;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,6 +43,10 @@ import retrofit2.Response;
 public class MainFragment extends Fragment {
 
     // Variables
+
+    public interface FragmentListener {
+        void onPhotoItemClicked(PhotoItemDao dao);
+    }
 
     ListView listView;
     PhotoListAdapter listAdapter;
@@ -101,6 +109,7 @@ public class MainFragment extends Fragment {
         listAdapter = new PhotoListAdapter(lastPositionInteger);
         listAdapter.setDao(photoListManager.getDao());
         listView.setAdapter(listAdapter);
+        listView.setOnItemClickListener(listViewItemClickListener);
 
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(pullToRefreshListener);
@@ -251,6 +260,17 @@ public class MainFragment extends Fragment {
                         loadMoreData();
                     }
                 }
+            }
+        }
+    };
+
+    final AdapterView.OnItemClickListener listViewItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if (position < photoListManager.getCount()) {
+                PhotoItemDao dao = photoListManager.getDao().getData().get(position);
+                FragmentListener listener = (FragmentListener) getActivity();
+                listener.onPhotoItemClicked(dao);
             }
         }
     };

@@ -1,5 +1,6 @@
 package com.example.cancacoop.liveat500px.activity;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
@@ -11,8 +12,12 @@ import android.view.MenuItem;
 
 import com.example.cancacoop.liveat500px.R;
 import com.example.cancacoop.liveat500px.fragment.MainFragment;
+import com.example.cancacoop.liveat500px.fragment.MoreInfoFragment;
 
-public class MainActivity extends AppCompatActivity {
+import dao.PhotoItemDao;
+
+public class MainActivity extends AppCompatActivity
+        implements MainFragment.FragmentListener {
 
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
@@ -68,5 +73,11 @@ public class MainActivity extends AppCompatActivity {
             return true;
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPhotoItemClicked(PhotoItemDao dao) {
+        Intent intent = new Intent(MainActivity.this, MoreInfoActivity.class);
+        startActivity(intent);
     }
 }
