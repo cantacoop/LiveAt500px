@@ -1,19 +1,29 @@
 package com.example.cancacoop.liveat500px.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.cancacoop.liveat500px.R;
+import com.example.cancacoop.liveat500px.view.SlidingTabLayout;
 
 /**
  * Created by nuuneoi on 11/16/2014.
  */
 public class MoreInfoFragment extends Fragment {
+
+    ViewPager viewPager;
+    private SlidingTabLayout slidingTabLayout;
+
 
     public MoreInfoFragment() {
         super();
@@ -53,6 +63,45 @@ public class MoreInfoFragment extends Fragment {
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
+        viewPager = rootView.findViewById(R.id.viewPager);
+        viewPager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                switch (position) {
+                    case 0:
+                        return PhotoSummaryFragment.newInstance();
+                    case 1:
+                        return PhotoInfoFragment.newInstance();
+                    case 2:
+                        return PhotoTagsFragment.newInstance();
+                    default:
+                        return null;
+                }
+            }
+
+            @Override
+            public int getCount() {
+                return 3;
+            }
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position) {
+                switch (position) {
+                    case 0:
+                        return "Summary";
+                    case 1:
+                        return "Info";
+                    case 2:
+                        return "Tags";
+                    default:
+                        return "";
+                }
+            }
+        });
+
+        slidingTabLayout = rootView.findViewById(R.id.slidingTabLayout);
+        slidingTabLayout.setViewPager(viewPager);
     }
 
     @Override
