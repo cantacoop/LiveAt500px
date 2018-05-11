@@ -23,6 +23,9 @@ import com.example.cancacoop.liveat500px.manager.PhotoListManager;
 import com.example.cancacoop.liveat500px.view.PhotoListItem;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import dao.PhotoItemCollectionDao;
@@ -83,6 +86,7 @@ public class MainFragment extends Fragment {
     }
 
     private void init(Bundle savedInstanceState) {
+        // Initialize Fragment level's variable(s) here
         photoListManager = new PhotoListManager();
         lastPositionInteger = new MutableInteger(-1);
     }
