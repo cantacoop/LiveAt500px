@@ -1,26 +1,36 @@
 package com.example.cancacoop.liveat500px.fragment;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.cancacoop.liveat500px.R;
+
+import dao.PhotoItemDao;
 
 /**
  * Created by nuuneoi on 11/16/2014.
  */
 public class PhotoTagsFragment extends Fragment {
 
+    PhotoItemDao dao;
+
+    TextView tvTags;
+
     public PhotoTagsFragment() {
         super();
     }
 
-    public static PhotoTagsFragment newInstance() {
+    public static PhotoTagsFragment newInstance(PhotoItemDao dao) {
         PhotoTagsFragment fragment = new PhotoTagsFragment();
         Bundle args = new Bundle();
+        args.putParcelable("dao", dao);
         fragment.setArguments(args);
         return fragment;
     }
@@ -29,6 +39,8 @@ public class PhotoTagsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init(savedInstanceState);
+
+        dao = getArguments().getParcelable("dao");
 
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
@@ -52,6 +64,17 @@ public class PhotoTagsFragment extends Fragment {
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
+
+        tvTags = rootView.findViewById(R.id.tvTags);
+        String msgTags = "";
+        for (int i = 0; i < dao.getTags().size(); i++) {
+
+            if (i != 0)
+                msgTags += ", ";
+            
+            msgTags += dao.getTags().get(i);
+        }
+        tvTags.setText(msgTags);
     }
 
     @Override

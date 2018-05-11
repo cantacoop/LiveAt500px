@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import com.example.cancacoop.liveat500px.R;
 import com.example.cancacoop.liveat500px.fragment.MoreInfoFragment;
 
+import dao.PhotoItemDao;
+
 public class MoreInfoActivity extends AppCompatActivity {
 
     @Override
@@ -14,16 +16,18 @@ public class MoreInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_more_info);
 
-        InitInstances();
+        initInstances();
+
+        PhotoItemDao dao = getIntent().getParcelableExtra("dao");
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.contentContainer, MoreInfoFragment.newInstance())
+                    .add(R.id.contentContainer, MoreInfoFragment.newInstance(dao))
                     .commit();
         }
     }
 
-    private void InitInstances() {
+    private void initInstances() {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

@@ -6,21 +6,29 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.cancacoop.liveat500px.R;
+
+import dao.PhotoItemDao;
 
 /**
  * Created by nuuneoi on 11/16/2014.
  */
 public class PhotoInfoFragment extends Fragment {
 
+    PhotoItemDao dao;
+
+    TextView tvInfo;
+
     public PhotoInfoFragment() {
         super();
     }
 
-    public static PhotoInfoFragment newInstance() {
+    public static PhotoInfoFragment newInstance(PhotoItemDao dao) {
         PhotoInfoFragment fragment = new PhotoInfoFragment();
         Bundle args = new Bundle();
+        args.putParcelable("dao", dao);
         fragment.setArguments(args);
         return fragment;
     }
@@ -29,6 +37,8 @@ public class PhotoInfoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init(savedInstanceState);
+
+        dao = getArguments().getParcelable("dao");
 
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
@@ -52,6 +62,8 @@ public class PhotoInfoFragment extends Fragment {
         // Init 'View' instance(s) with rootView.findViewById here
         // Note: State of variable initialized here could not be saved
         //       in onSavedInstanceState
+        tvInfo = rootView.findViewById(R.id.tvInfo);
+        tvInfo.setText(dao.getUsername() + "\n" + dao.getCaption());
     }
 
     @Override
