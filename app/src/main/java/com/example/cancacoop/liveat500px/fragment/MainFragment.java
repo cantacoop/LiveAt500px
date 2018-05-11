@@ -136,6 +136,7 @@ public class MainFragment extends Fragment {
 
     private void reloadData() {
         Call<PhotoItemCollectionDao> call = HttpManager.getInstance().getService().loadPhotoList();
+
         call.enqueue(new PhotoListLoadCallback(PhotoListLoadCallback.MODE_RELOAD));
     }
 
@@ -347,6 +348,7 @@ public class MainFragment extends Fragment {
             // Handle
             clearLoadingMoreFlagIfCapable(mode);
             swipeRefreshLayout.setRefreshing(false);
+//            showToast("onFailure");
             showToast(t.toString());
         }
 

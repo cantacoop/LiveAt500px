@@ -143,8 +143,10 @@ public class MoreInfoFragment extends Fragment {
     private Intent getShareIntent() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, dao.getCaption());
-        intent.putExtra(Intent.EXTRA_TEXT, dao.getUsername() + "\n" + dao.getCaption());
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+        intent.putExtra(Intent.EXTRA_TEXT, "Extra Text");
+//        intent.putExtra(Intent.EXTRA_SUBJECT, dao.getCaption());
+//        intent.putExtra(Intent.EXTRA_TEXT, dao.getUsername() + "\n" + dao.getCaption());
         return intent;
     }
 }
